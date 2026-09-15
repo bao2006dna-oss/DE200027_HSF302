@@ -1,4 +1,7 @@
+
+
 package fu.de200027.pojo;
 
-public class Gender {
+public enum Gender {
+    MALE, FEMALE, OTHER
 }
