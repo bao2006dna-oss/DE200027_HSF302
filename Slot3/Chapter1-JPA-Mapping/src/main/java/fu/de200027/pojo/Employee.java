@@ -31,7 +31,11 @@ public class Employee {
     @Column(name = "active")
     private boolean active = true;
 
-    // Constructor không tham số (Bắt buộc cho JPA)
+    // TODO 2.2: Owning side (Phía giữ khóa ngoại department_id)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id", nullable = false)
+    private Department department;
+
     public Employee() {
     }
 
@@ -44,25 +48,23 @@ public class Employee {
         this.active = true;
     }
 
-    // Getters and Setters
+    // Getter & Setter cho department
+    public Department getDepartment() { return department; }
+    public void setDepartment(Department department) { this.department = department; }
+
+    // Getters & Setters còn lại
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
     public String getFullName() { return fullName; }
     public void setFullName(String fullName) { this.fullName = fullName; }
-
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-
     public BigDecimal getSalary() { return salary; }
     public void setSalary(BigDecimal salary) { this.salary = salary; }
-
     public Gender getGender() { return gender; }
     public void setGender(Gender gender) { this.gender = gender; }
-
     public LocalDate getHireDate() { return hireDate; }
     public void setHireDate(LocalDate hireDate) { this.hireDate = hireDate; }
-
     public boolean isActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
 }
