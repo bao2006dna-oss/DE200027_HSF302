@@ -18,5 +18,17 @@ public class Department {
     @Column(name = "location")
     private String location;
 
+    // TODO 2.3: Inverse side (OneToMany)
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Employee> employees = new ArrayList<>();
+
+    public Department() {
+    }
+
+    public Department(String name, String location) {
+        this.name = name;
+        this.location = location;
+    }
+
 
 }
