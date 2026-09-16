@@ -107,5 +107,20 @@ public class DepartmentDao {
             em.close(); // Đóng EntityManager nhưng dữ liệu employees đã được nạp (fetched) trước đó
         }
     }
+    // TODO 2.9: Fix N+1 Query Problem bằng cách lấy tất cả Department kèm Employees trong đúng 1 câu SQL
+    public List<Department> findAllWithEmployees() {
+        EntityManager em = JPAUtil.getEMF().createEntityManager();
+        try {
+            return em.createQuery(
+                    "SELECT DISTINCT d FROM Department d LEFT JOIN FETCH d.employees",
+                    Department.class
+            ).getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        } finally {
+            em.close(); // an toàn vì dữ liệu employees đã được fetch ngay trong query
+        }
+    }
 
 }
