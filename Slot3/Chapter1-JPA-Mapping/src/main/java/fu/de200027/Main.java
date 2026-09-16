@@ -1,47 +1,34 @@
 package fu.de200027;
 
-import fu.de200027.dao.DepartmentDao;
 import fu.de200027.pojo.Department;
-import fu.de200027.pojo.Employee;
-import fu.de200027.pojo.Gender;
 import fu.de200027.util.JPAUtil;
+import jakarta.persistence.EntityManager;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        DepartmentDao departmentDAO = new DepartmentDao();
+        System.out.println("==========================================");
+        System.out.println("   TODO 2.8: TÁI HIỆN N+1 QUERY PROBLEM");
+        System.out.println("==========================================");
 
-        // 1) Tạo Department + 3 Employee, add qua helper method (TODO 2.4)
-        Department it = new Department("Marketing", "Ha Noi");
+        EntityManager em = JPAUtil.getEMF().createEntityManager();
 
-        Employee e1 = new Employee("aa.nguyen@company.com", "Nguyen Van A", Gender.MALE,
-                new BigDecimal("15000000"), LocalDate.of(2022, 1, 10));
+        try {
+            // 1. Query lấy danh sách Department -> Phát sinh 1 câu SQL SELECT * FROM departments
+            List<Department> deptList = em.createQuery("SELECT d FROM Department d", Department.class).getResultList();
 
-        Employee e2 = new Employee("bb.tran@company.com", "Tran Thi B", Gender.FEMALE,
-                new BigDecimal("18000000"), LocalDate.of(2021, 6, 1));
+            System.out.println("\n--- Bắt đầu duyệt danh sách Department (Quan sát SQL log phía dưới) ---");
 
-        Employee e3 = new Employee("cc.le@company.com", "Le Van C", Gender.OTHER,
-                new BigDecimal("12000000"), LocalDate.of(2023, 3, 15));
+            // 2. Vòng lặp truy cập collection LAZY khi Session vẫn đang MỞ:
+            // Mỗi lần gọi d.getEmployees().size(), Hibernate lại phát sinh thêm 1 câu SQL SELECT riêng cho Department đó (N câu SQL)
+            for (Department d : deptList) {
+                System.out.println("Phòng ban: " + d.getName() + " | Số nhân viên: " + d.getEmployees().size());
+            }
 
-        it.addEmployee(e1);
-        it.addEmployee(e2);
-        it.addEmployee(e3);
-
-        // 2) Chỉ persist(department) — cascade = ALL tự lo phần Employee (TODO 2.7)
-        departmentDAO.save(it);
-
-        System.out.println("Da luu Department, id = " + it.getId());
-
-        // 3) Tim lai kem employees bang JOIN FETCH (TODO 2.6)
-        Department found = departmentDAO.findByIdWithEmployees(it.getId());
-
-        System.out.println("Phong ban: " + found.getName());
-        for (Employee e : found.getEmployees()) {
-            System.out.println("  - " + e);
+        } finally {
+            em.close();
+            JPAUtil.close();
         }
-
-        JPAUtil.close();
     }
 }
