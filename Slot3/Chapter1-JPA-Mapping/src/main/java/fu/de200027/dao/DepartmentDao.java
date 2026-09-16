@@ -90,4 +90,22 @@ public class DepartmentDao {
             em.close();
         }
     }
+    // TODO 2.6: Lấy Department kèm danh sách Employees bằng JOIN FETCH
+    public Department findByIdWithEmployees(Long id) {
+        EntityManager em = JPAUtil.getEMF().createEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT d FROM Department d JOIN FETCH d.employees WHERE d.id = :id",
+                            Department.class
+                    )
+                    .setParameter("id", id)
+                    .getSingleResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            em.close(); // Đóng EntityManager nhưng dữ liệu employees đã được nạp (fetched) trước đó
+        }
+    }
+
 }
