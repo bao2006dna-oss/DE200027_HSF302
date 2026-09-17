@@ -1,38 +1,53 @@
 package fu.de200027.pojo;
+
 import jakarta.persistence.*;
 import lombok.*;
 
+import javax.management.ConstructorParameters;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Period;
 
-@Entity
-@Table(name = "employees")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@NoArgsConstructor
+@Entity
+@Table(name = "Employee")
 public class Employee {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(nullable = false)
     private String fullName;
+
 
     @Column(unique = true)
     private String email;
 
-    @Column(precision = 10, scale = 2)
-    private BigDecimal salary;
-
-    // Luôn dùng STRING, KHÔNG dùng mặc định ORDINAL (số thứ tự dễ sai khi enum thay đổi)
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-
-    // JPA 2.2+ map LocalDate trực tiếp, không cần @Temporal
     private LocalDate hireDate;
-
     private boolean active;
+    @Transient
+    private int yearsOfService ;
+
+
+    public int getYearsOfService() {
+        if (hireDate == null) return 0;
+        return Period.between(hireDate, LocalDate.now()).getYears();
+
+
+    }
+
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                ", email='" + email + '\'' +
+                ", hireDate=" + hireDate +
+                ", active=" + active +
+                ", yearsOfService=" + yearsOfService +
+                '}';
+    }
 }
