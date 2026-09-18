@@ -72,6 +72,12 @@ public class Employee {
         project.getEmployees().remove(this);
     }
 
+    // TODO 5.5: Gán Employee vào Project ở cả 2 phía
+    public void assignToProject(Project p) {
+        this.projects.add(p);
+        p.getEmployees().add(this);
+    }
+
     // TODO 5.4: equals/hashCode dựa trên email, không dùng id
     @Override
     public boolean equals(Object o) {
