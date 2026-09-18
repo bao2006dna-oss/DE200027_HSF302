@@ -7,6 +7,8 @@ import jakarta.persistence.EntityTransaction;
 
 import java.util.Collections;
 import java.util.List;
+import fu.de200027.pojo.Employee;
+import fu.de200027.pojo.Project;
 
 public class EmployeeDao {
 
@@ -86,6 +88,37 @@ public class EmployeeDao {
                 tx.rollback();
             }
             e.printStackTrace();
+        } finally {
+            em.close();
+        }
+    }
+    // TODO 5.6: Gán Employee vào Project trong cùng một transaction
+    public void assignEmployeeToProject(Long employeeId, Long projectId) {
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            em.getTransaction().begin();
+
+            Employee employee = em.find(Employee.class, employeeId);
+            Project project = em.find(Project.class, projectId);
+
+            if (employee == null) {
+                throw new IllegalArgumentException("Employee not found: " + employeeId);
+            }
+
+            if (project == null) {
+                throw new IllegalArgumentException("Project not found: " + projectId);
+            }
+
+            employee.assignToProject(project);
+
+            em.getTransaction().commit();
+
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw e;
         } finally {
             em.close();
         }
