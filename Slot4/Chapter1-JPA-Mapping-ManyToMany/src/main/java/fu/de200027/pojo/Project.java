@@ -100,4 +100,7 @@ public class Project {
     public void setEmployees(Set<Employee> employees) {
         this.employees = employees;
     }
+    // Inverse side của quan hệ N-N
+    @ManyToMany(mappedBy = "projects")
+    private Set<Employee> employees = new HashSet<>();
 }
