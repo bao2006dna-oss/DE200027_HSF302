@@ -3,6 +3,8 @@ package fu.de200027.pojo;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "employees")
@@ -15,7 +17,7 @@ public class Employee {
     @Column(name = "full_name")
     private String fullName;
 
-    @Column(name = "email", unique = true)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
     @Column(name = "salary")
@@ -28,13 +30,22 @@ public class Employee {
     @Column(name = "hire_date")
     private LocalDate hireDate;
 
-    @Column(name = "active")
+    @Column(name = "active", nullable = false)
     private boolean active = true;
 
-    // TODO 2.2: Owning side (Phía giữ khóa ngoại department_id)
+    // TODO 2.2: Phía giữ khóa ngoại department_id (OneToMany với Department)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
+
+    // TODO 5.1: Quan hệ N-N với Project (Owning side, dùng Set để tránh trùng lặp)
+    @ManyToMany
+    @JoinTable(
+            name = "employee_project",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id")
+    )
+    private Set<Project> projects = new HashSet<>();
 
     public Employee() {
     }
@@ -48,9 +59,24 @@ public class Employee {
         this.active = true;
     }
 
+    // Helper methods cho quan hệ N-N (tùy chọn nhưng khuyến khích dùng để đồng bộ 2 chiều)
+    public void addProject(Project project) {
+        this.projects.add(project);
+        project.getEmployees().add(this);
+    }
+
+    public void removeProject(Project project) {
+        this.projects.remove(project);
+        project.getEmployees().remove(this);
+    }
+
     // Getter & Setter cho department
     public Department getDepartment() { return department; }
     public void setDepartment(Department department) { this.department = department; }
+
+    // Getter & Setter cho projects (N-N)
+    public Set<Project> getProjects() { return projects; }
+    public void setProjects(Set<Project> projects) { this.projects = projects; }
 
     // Getters & Setters còn lại
     public Long getId() { return id; }
