@@ -28,7 +28,7 @@ public class Project {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    // Inverse side của quan hệ N-N
+    // TODO 5.3: Inverse side của quan hệ N-N
     @ManyToMany(mappedBy = "projects")
     private Set<Employee> employees = new HashSet<>();
 
@@ -43,6 +43,24 @@ public class Project {
         this.budget = budget;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    // TODO 5.4: equals/hashCode dựa trên projectCode, không dùng id
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Project)) return false;
+
+        Project project = (Project) o;
+
+        // Không dùng id vì id chỉ được sinh sau khi persist.
+        // Dùng projectCode làm business key để equals/hashCode ổn định.
+        return projectCode != null && projectCode.equals(project.projectCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return projectCode != null ? projectCode.hashCode() : 0;
     }
 
     public Long getId() {
@@ -100,7 +118,4 @@ public class Project {
     public void setEmployees(Set<Employee> employees) {
         this.employees = employees;
     }
-    // Inverse side của quan hệ N-N
-    @ManyToMany(mappedBy = "projects")
-    private Set<Employee> employees = new HashSet<>();
 }

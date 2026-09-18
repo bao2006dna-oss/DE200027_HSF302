@@ -34,7 +34,7 @@ public class Employee {
     @Column(name = "active", nullable = false)
     private boolean active = true;
 
-    // TODO 2.2: Phía giữ khóa ngoại department_id (OneToMany với Department)
+    // TODO 2.2: Phía giữ khóa ngoại department_id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
@@ -51,7 +51,8 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String email, String fullName, Gender gender, BigDecimal salary, LocalDate hireDate) {
+    public Employee(String email, String fullName, Gender gender,
+                    BigDecimal salary, LocalDate hireDate) {
         this.email = email;
         this.fullName = fullName;
         this.gender = gender;
@@ -60,7 +61,7 @@ public class Employee {
         this.active = true;
     }
 
-    // Helper methods cho quan hệ N-N (tùy chọn nhưng khuyến khích dùng để đồng bộ 2 chiều)
+    // Helper methods cho quan hệ N-N
     public void addProject(Project project) {
         this.projects.add(project);
         project.getEmployees().add(this);
@@ -69,6 +70,25 @@ public class Employee {
     public void removeProject(Project project) {
         this.projects.remove(project);
         project.getEmployees().remove(this);
+    }
+
+    // TODO 5.4: equals/hashCode dựa trên email, không dùng id
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Employee)) return false;
+
+        Employee employee = (Employee) o;
+
+        // Không dùng id vì id chỉ được sinh sau khi persist.
+        // Dùng email làm business key để equals/hashCode ổn định
+        // trước và sau khi entity được lưu vào database.
+        return email != null && email.equals(employee.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return email != null ? email.hashCode() : 0;
     }
 
     // Getter & Setter cho department
@@ -80,7 +100,7 @@ public class Employee {
         this.department = department;
     }
 
-    // Getter & Setter cho projects (N-N)
+    // Getter & Setter cho projects
     public Set<Project> getProjects() {
         return projects;
     }
@@ -145,14 +165,4 @@ public class Employee {
     public void setActive(boolean active) {
         this.active = active;
     }
-
-    @ManyToMany
-    @JoinTable(
-            name = "employee_project",
-            joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id")
-    )
-    private Set<Project> projects = new HashSet<>();
-
-
 }
