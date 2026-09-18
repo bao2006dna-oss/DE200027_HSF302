@@ -1,52 +1,112 @@
 package fu.de200027;
 
-import fu.de200027.dao.DepartmentDao;
-import fu.de200027.pojo.Department;
-import fu.de200027.util.JPAUtil;
-import jakarta.persistence.EntityManager;
+import fu.de200027.dao.EmployeeDAO;
+import fu.de200027.pojo.Employee;
+import fu.de200027.pojo.Gender;
+import fu.de200027.pojo.Project;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class Main {
+
     public static void main(String[] args) {
-        DepartmentDao departmentDAO = new DepartmentDao();
 
-        System.out.println("==========================================");
-        System.out.println("   TODO 2.8: TÁI HIỆN N+1 QUERY PROBLEM");
-        System.out.println("==========================================");
+        EmployeeDAO dao = new EmployeeDAO();
 
-        EntityManager em = JPAUtil.getEMF().createEntityManager();
         try {
-            // 1. SELECT * FROM departments (1 query)
-            List<Department> deptList = em.createQuery("SELECT d FROM Department d", Department.class).getResultList();
+            // TODO 5.7: Tạo 3 Employee
+            Employee nv1 = new Employee(
+                    "nv1@gmail.com",
+                    "Nguyen Van A",
+                    Gender.MALE,
+                    new BigDecimal("1500.00"),
+                    LocalDate.of(2024, 1, 10)
+            );
 
-            System.out.println("\n--- Bắt đầu duyệt danh sách LAZY (Sinh ra 1 + N câu SQL) ---");
-            // 2. Mỗi lần d.getEmployees().size() phát sinh thêm 1 query SELECT employees (N queries)
-            for (Department d : deptList) {
-                System.out.println("Phòng ban: " + d.getName() + " | Số nhân viên: " + d.getEmployees().size());
+            Employee nv2 = new Employee(
+                    "nv2@gmail.com",
+                    "Tran Thi B",
+                    Gender.FEMALE,
+                    new BigDecimal("1800.00"),
+                    LocalDate.of(2024, 3, 15)
+            );
+
+            Employee nv3 = new Employee(
+                    "nv3@gmail.com",
+                    "Le Van C",
+                    Gender.MALE,
+                    new BigDecimal("2000.00"),
+                    LocalDate.of(2024, 5, 20)
+            );
+
+            nv1.setActive(true);
+            nv2.setActive(true);
+            nv3.setActive(true);
+
+            // TODO 5.7: Tạo 2 Project
+            Project projectA = new Project(
+                    "PRJ001",
+                    "Project A",
+                    new BigDecimal("10000.00"),
+                    LocalDate.of(2025, 1, 1),
+                    null
+            );
+
+            Project projectB = new Project(
+                    "PRJ002",
+                    "Project B",
+                    new BigDecimal("20000.00"),
+                    LocalDate.of(2025, 2, 1),
+                    null
+            );
+
+            // Lưu Employee và Project
+            Long nv1Id = dao.create(nv1);
+            Long nv2Id = dao.create(nv2);
+            Long nv3Id = dao.create(nv3);
+
+            Long projectAId = dao.createProject(projectA);
+            Long projectBId = dao.createProject(projectB);
+
+            // TODO 5.7: Phân công chéo
+            // NV1 -> Project A + B
+            dao.assignEmployeeToProject(nv1Id, projectAId);
+            dao.assignEmployeeToProject(nv1Id, projectBId);
+
+            // NV2 -> Project B
+            dao.assignEmployeeToProject(nv2Id, projectBId);
+
+            // NV3 -> Project A
+            dao.assignEmployeeToProject(nv3Id, projectAId);
+
+            // In danh sách project của từng nhân viên
+            System.out.println("\n===== PROJECTS OF EMPLOYEES =====");
+
+            Employee e1 = dao.findById(nv1Id);
+            Employee e2 = dao.findById(nv2Id);
+            Employee e3 = dao.findById(nv3Id);
+
+            System.out.println("\n" + e1.getFullName() + ":");
+            for (Project p : e1.getProjects()) {
+                System.out.println("- " + p.getProjectCode()
+                        + " - " + p.getProjectName());
             }
+
+            System.out.println("\n" + e2.getFullName() + ":");
+            for (Project p : e2.getProjects()) {
+                System.out.println("- " + p.getProjectCode()
+                        + " - " + p.getProjectName());
+            }
+
+            System.out.println("\n" + e3.getFullName() + ":");
+            for (Project p : e3.getProjects()) {
+                System.out.println("- " + p.getProjectCode()
+                        + " - " + p.getProjectName());
+            }
+
         } finally {
-            em.close();
+            dao.close();
         }
-
-        System.out.println("\n==========================================");
-        System.out.println("     TODO 2.9: FIX N+1 BẰNG JOIN FETCH");
-        System.out.println("==========================================");
-
-        /*
-         * SO SÁNH SQL LOG:
-         * - TRƯỚC FIX (TODO 2.8): Phát sinh 1 + N câu SQL Query riêng biệt.
-         * - SAU FIX (TODO 2.9): Chỉ phát sinh ĐÚNG 1 CÂU SQL JOIN DUY NHẤT:
-         *   SELECT DISTINCT ... FROM departments d LEFT OUTER JOIN employees e ON d.id = e.department_id
-         */
-        List<Department> deptListFetch = departmentDAO.findAllWithEmployees();
-
-        System.out.println("\n--- Bắt đầu duyệt danh sách JOIN FETCH (Chỉ có đúng 1 câu SQL) ---");
-        for (Department d : deptListFetch) {
-            System.out.println("Phòng ban: " + d.getName() + " | Số nhân viên: " + d.getEmployees().size());
-        }
-
-        // Đóng EMF ở cuối chương trình
-        JPAUtil.close();
     }
 }
