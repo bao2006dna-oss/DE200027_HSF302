@@ -30,6 +30,9 @@ public class Department {
     @OneToMany(mappedBy = "department")
     private List<Student> students = new ArrayList<>();
 
+    public Department(String se, String softwareEngineering) {
+    }
+
     // Helper method đồng bộ 2 chiều
     public void addStudent(Student student) {
         if (students == null) {

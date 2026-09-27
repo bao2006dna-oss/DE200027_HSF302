@@ -28,4 +28,7 @@ public interface StudentService {
     // TODO 11
     List<Student> findByDepartmentCode(String deptCode);
     List<Student> findTop3HighestGpa();
+    // TODO 12
+    List<Student> findByDeptAndMinGpa(String deptCode, double minGpa);
+    List<Student> searchByNameOrEmailJPQL(String keyword);
 }

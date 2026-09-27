@@ -4,6 +4,8 @@ import com.example.chap4.pojo.Gender;
 import com.example.chap4.pojo.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,4 +30,10 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
     // TODO 11
     List<Student> findByDepartmentCode(String deptCode);
     List<Student> findTop3ByOrderByGpaDesc();
+    // TODO 12: JPQL Queries
+    @Query("SELECT s FROM Student s WHERE s.department.code = :deptCode AND s.gpa >= :minGpa")
+    List<Student> findByDeptCodeAndMinGpa(@Param("deptCode") String deptCode, @Param("minGpa") double minGpa);
+
+    @Query("SELECT s FROM Student s WHERE LOWER(s.fullName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(s.email) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    List<Student> searchByNameOrEmailJPQL(@Param("keyword") String keyword);
 }

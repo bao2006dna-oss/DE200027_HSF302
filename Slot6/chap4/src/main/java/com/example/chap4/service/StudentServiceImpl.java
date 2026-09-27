@@ -107,6 +107,20 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> findTop3HighestGpa() {
         return studentRepository.findTop3ByOrderByGpaDesc();
     }
+    @Override
+    public List<Student> findByDeptAndMinGpa(String deptCode, double minGpa) {
+        if (deptCode == null || deptCode.isBlank()) {
+            return List.of();
+        }
+        return studentRepository.findByDeptCodeAndMinGpa(deptCode.trim().toUpperCase(), minGpa);
+    }
 
+    @Override
+    public List<Student> searchByNameOrEmailJPQL(String keyword) {
+        if (keyword == null || keyword.isBlank()) {
+            return List.of();
+        }
+        return studentRepository.searchByNameOrEmailJPQL(keyword.trim());
+    }
 
 }
