@@ -1,10 +1,12 @@
 package com.example.chap4.runner;
 
+import com.example.chap4.pojo.Student;
 import com.example.chap4.service.DepartmentService;
 import com.example.chap4.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -19,9 +21,8 @@ public class ExerciseRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        // Tạm thời để trống các method partB -> partE, sẽ bổ sung ở các TODO tiếp theo
-        System.out.println("=== ExerciseRunner ready ===");
         todo6();
+        todo7();
     }
 
     private void title(String t) {
@@ -33,6 +34,7 @@ public class ExerciseRunner implements CommandLineRunner {
         list.forEach(o -> System.out.println("   " + o));
         System.out.println("   -> " + list.size() + " record(s)");
     }
+
     private void todo6() {
         title("TODO 6: count / findById / existsById");
         System.out.println("Departments: " + departmentService.count());
@@ -47,5 +49,20 @@ public class ExerciseRunner implements CommandLineRunner {
                 .orElse("Not found"));
 
         System.out.println("existsById(4) department -> " + departmentService.existsById(4L));
+    }
+
+    private void todo7() {
+        title("TODO 7: Sort & Pageable");
+
+        // (a) All students order by GPA desc
+        printList("All students order by GPA desc", studentService.findAllOrderByGpaDesc());
+
+        // (b) Page index 1 (trang thu 2), size 3, sort theo fullName
+        Page<Student> page = studentService.findPage(1, 3, "fullName");
+        printList("Page index " + page.getNumber() + " (size " + page.getSize() + ")", page.getContent());
+        System.out.println("totalElements=" + page.getTotalElements()
+                + ", totalPages=" + page.getTotalPages()
+                + ", hasNext=" + page.hasNext()
+                + ", hasPrevious=" + page.hasPrevious());
     }
 }
