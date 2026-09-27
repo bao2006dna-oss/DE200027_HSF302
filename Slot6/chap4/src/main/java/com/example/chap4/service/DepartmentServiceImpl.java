@@ -1,5 +1,6 @@
 package com.example.chap4.service;
 
+import com.example.chap4.pojo.Department;
 import com.example.chap4.pojo.Gender;
 import com.example.chap4.pojo.Student;
 import com.example.chap4.repository.DepartmentRepository;
@@ -41,5 +42,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public List<Student> findBornAfter(LocalDate date) {
         return List.of();
+    }
+    @Override
+    public List<Department> findEmptyDepartments() {
+        return departmentRepository.findByStudentsIsEmpty();
     }
 }

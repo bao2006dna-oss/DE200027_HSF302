@@ -95,7 +95,18 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> findBornAfter(LocalDate date) {
         return studentRepository.findByDobAfter(date);
     }
+    @Override
+    public List<Student> findByDepartmentCode(String deptCode) {
+        if (deptCode == null || deptCode.isBlank()) {
+            return List.of();
+        }
+        return studentRepository.findByDepartmentCode(deptCode.trim().toUpperCase());
+    }
 
+    @Override
+    public List<Student> findTop3HighestGpa() {
+        return studentRepository.findTop3ByOrderByGpaDesc();
+    }
 
 
 }

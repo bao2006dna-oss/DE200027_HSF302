@@ -25,4 +25,7 @@ public interface StudentService {
     List<Student> findByGpaRange(double min, double max);
     List<Student> findActiveByGender(Gender gender);
     List<Student> findBornAfter(LocalDate date);
+    // TODO 11
+    List<Student> findByDepartmentCode(String deptCode);
+    List<Student> findTop3HighestGpa();
 }

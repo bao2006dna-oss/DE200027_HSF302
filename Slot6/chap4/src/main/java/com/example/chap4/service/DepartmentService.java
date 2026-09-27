@@ -1,6 +1,7 @@
 package com.example.chap4.service;
 
 
+import com.example.chap4.pojo.Department;
 import com.example.chap4.pojo.Gender;
 import com.example.chap4.pojo.Student;
 
@@ -14,5 +15,7 @@ public interface DepartmentService {
     // TODO 10
     List<Student> findByGpaRange(double min, double max);
     List<Student> findActiveByGender(Gender gender);
-    List<Student> findBornAfter(LocalDate date);
+
+    // TODO 11
+    List<Department> findEmptyDepartments();
 }
