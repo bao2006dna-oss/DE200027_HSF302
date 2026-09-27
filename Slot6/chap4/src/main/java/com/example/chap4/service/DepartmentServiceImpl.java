@@ -1,10 +1,15 @@
 package com.example.chap4.service;
 
+import com.example.chap4.pojo.Gender;
+import com.example.chap4.pojo.Student;
 import com.example.chap4.repository.DepartmentRepository;
 import com.example.chap4.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,5 +26,20 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public boolean existsById(Long id) {
         return departmentRepository.existsById(id);
+    }
+
+    @Override
+    public List<Student> findByGpaRange(double min, double max) {
+        return List.of();
+    }
+
+    @Override
+    public List<Student> findActiveByGender(Gender gender) {
+        return List.of();
+    }
+
+    @Override
+    public List<Student> findBornAfter(LocalDate date) {
+        return List.of();
     }
 }
