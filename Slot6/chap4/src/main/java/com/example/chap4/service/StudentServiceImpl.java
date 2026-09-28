@@ -1,5 +1,6 @@
 package com.example.chap4.service;
 
+import com.example.chap4.dto.DepartmentStat;
 import com.example.chap4.dto.StudentSearchCriteria;
 import com.example.chap4.dto.StudentSummary;
 import com.example.chap4.pojo.Gender;
@@ -180,4 +181,11 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> findStudentsWithComplexConditionCustom(String deptCode, double minGpa, boolean activeOnly) {
         return studentRepository.findStudentsWithComplexConditionCustom(deptCode, minGpa, activeOnly);
     }
+
+    @Override
+    public List<DepartmentStat> getDepartmentStatistics() {
+        return studentRepository.getDepartmentStatistics();
+    }
+
+
 }

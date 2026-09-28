@@ -1,5 +1,6 @@
 package com.example.chap4.service;
 
+import com.example.chap4.dto.DepartmentStat;
 import com.example.chap4.dto.StudentSearchCriteria;
 import com.example.chap4.dto.StudentSummary;
 import com.example.chap4.pojo.Gender;
@@ -49,4 +50,6 @@ public interface StudentService {
     Page<Student> searchDynamicPageable(StudentSearchCriteria criteria, int pageIndex, int size, String sortField, String sortDirection);
     // TODO 19
     List<Student> findStudentsWithComplexConditionCustom(String deptCode, double minGpa, boolean activeOnly);
+    // TODO 20
+    List<DepartmentStat> getDepartmentStatistics();
 }

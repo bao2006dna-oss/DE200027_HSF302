@@ -1,5 +1,6 @@
 package com.example.chap4.runner;
 
+import com.example.chap4.dto.DepartmentStat;
 import com.example.chap4.dto.StudentSearchCriteria;
 import com.example.chap4.dto.StudentSummary;
 import com.example.chap4.pojo.Gender;
@@ -184,5 +185,13 @@ public class ExerciseRunner implements CommandLineRunner {
 
         printList("Custom Repo (dept='SE', minGpa=3.0, activeOnly=true)",
                 studentService.findStudentsWithComplexConditionCustom("SE", 3.0, true));
+    }
+    private void todo20() {
+        title("TODO 20: Aggregation & Statistics (GROUP BY)");
+
+        List<DepartmentStat> stats = studentService.getDepartmentStatistics();
+        System.out.println("-- Department Student Statistics:");
+        stats.forEach(st -> System.out.printf("   Dept: %s (%s) | Students: %d | Avg GPA: %.2f%n",
+                st.getDepartmentCode(), st.getDepartmentName(), st.getStudentCount(), st.getAvgGpa()));
     }
 }

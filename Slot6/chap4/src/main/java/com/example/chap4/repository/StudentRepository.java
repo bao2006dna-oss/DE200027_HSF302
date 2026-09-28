@@ -1,5 +1,6 @@
 package com.example.chap4.repository;
 
+import com.example.chap4.dto.DepartmentStat;
 import com.example.chap4.dto.StudentSummary;
 import com.example.chap4.pojo.Gender;
 import com.example.chap4.pojo.Student;
@@ -67,7 +68,14 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
     @Modifying
     @Query("DELETE FROM Student s WHERE s.active = false AND s.gpa < :minGpa")
     int deleteInactiveStudentsWithGpaLessThan(@Param("minGpa") double minGpa);
-
+    // TODO 20: Aggregation & Group By Query
+    @Query("SELECT s.department.code AS departmentCode, " +
+            "s.department.name AS departmentName, " +
+            "COUNT(s) AS studentCount, " +
+            "AVG(s.gpa) AS avgGpa " +
+            "FROM Student s " +
+            "GROUP BY s.department.code, s.department.name")
+    List<DepartmentStat> getDepartmentStatistics();
 
 
 
