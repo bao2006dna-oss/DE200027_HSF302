@@ -45,6 +45,6 @@ public interface StudentService {
     int deleteInactiveStudentsByMinGpa(double minGpa);
     // TODO 17
     List<Student> searchDynamic(StudentSearchCriteria criteria);
-
-    List<Student> searchDynamic(StudentSearchCriteria criteria);
+    // TODO 18
+    Page<Student> searchDynamicPageable(StudentSearchCriteria criteria, int pageIndex, int size, String sortField, String sortDirection);
 }

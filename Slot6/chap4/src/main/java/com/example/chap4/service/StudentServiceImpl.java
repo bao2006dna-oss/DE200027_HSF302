@@ -164,4 +164,14 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> searchDynamic(StudentSearchCriteria criteria) {
         return studentRepository.findAll(StudentSpecification.filter(criteria));
     }
+    @Override
+    public Page<Student> searchDynamicPageable(StudentSearchCriteria criteria, int pageIndex, int size, String sortField, String sortDirection) {
+        if (pageIndex < 0 || size <= 0) {
+            throw new IllegalArgumentException("pageIndex phải >= 0 và size phải > 0");
+        }
+        Sort.Direction direction = "desc".equalsIgnoreCase(sortDirection) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(pageIndex, size, Sort.by(direction, sortField));
+
+        return studentRepository.findAll(StudentSpecification.filter(criteria), pageable);
+    }
 }

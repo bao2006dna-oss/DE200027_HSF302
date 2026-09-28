@@ -37,6 +37,7 @@ public class ExerciseRunner implements CommandLineRunner {
         todo15();
         todo16();
         todo17();
+        todo18();
     }
 
     private void title(String t) {
@@ -163,5 +164,18 @@ public class ExerciseRunner implements CommandLineRunner {
         criteria.setActive(true);
 
         printList("Dynamic filter (dept='SE', minGpa=3.0, active=true)", studentService.searchDynamic(criteria));
+    }
+    private void todo18() {
+        title("TODO 18: Dynamic Query with Pagination & Sorting");
+
+        StudentSearchCriteria criteria = new StudentSearchCriteria();
+        criteria.setMinGpa(2.5);
+
+        Page<Student> page = studentService.searchDynamicPageable(criteria, 0, 3, "gpa", "desc");
+
+        System.out.println("-- Dynamic Search Page 0 (size 3, sorted by GPA DESC):");
+        System.out.printf("   Total elements: %d | Total pages: %d | Current page: %d%n",
+                page.getTotalElements(), page.getTotalPages(), page.getNumber());
+        page.getContent().forEach(s -> System.out.println("   " + s));
     }
 }
