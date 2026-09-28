@@ -31,4 +31,7 @@ public interface StudentService {
     // TODO 12
     List<Student> findByDeptAndMinGpa(String deptCode, double minGpa);
     List<Student> searchByNameOrEmailJPQL(String keyword);
+    // TODO 13
+    List<Student> findAllActiveWithDepartment();
+    List<Student> findByDeptCodeWithDepartment(String deptCode);
 }

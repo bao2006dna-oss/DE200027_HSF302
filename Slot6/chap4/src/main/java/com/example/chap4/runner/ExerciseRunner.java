@@ -29,6 +29,9 @@ public class ExerciseRunner implements CommandLineRunner {
         todo9();
         todo10();
         todo11();
+        todo12();
+        todo13();
+
     }
 
     private void title(String t) {
@@ -105,5 +108,11 @@ public class ExerciseRunner implements CommandLineRunner {
 
         printList("Students in 'SE' with GPA >= 3.2", studentService.findByDeptAndMinGpa("SE", 3.2));
         printList("Search JPQL name/email contains 'binh'", studentService.searchByNameOrEmailJPQL("binh"));
+    }
+    private void todo13() {
+        title("TODO 13: JOIN FETCH JPQL Queries");
+
+        printList("All active students with Department fetched", studentService.findAllActiveWithDepartment());
+        printList("Students in 'SE' with Department fetched", studentService.findByDeptCodeWithDepartment("SE"));
     }
 }

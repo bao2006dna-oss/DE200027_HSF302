@@ -122,5 +122,17 @@ public class StudentServiceImpl implements StudentService {
         }
         return studentRepository.searchByNameOrEmailJPQL(keyword.trim());
     }
+    @Override
+    public List<Student> findAllActiveWithDepartment() {
+        return studentRepository.findAllActiveWithDepartmentFetch();
+    }
+
+    @Override
+    public List<Student> findByDeptCodeWithDepartment(String deptCode) {
+        if (deptCode == null || deptCode.isBlank()) {
+            return List.of();
+        }
+        return studentRepository.findByDepartmentCodeFetch(deptCode.trim().toUpperCase());
+    }
 
 }

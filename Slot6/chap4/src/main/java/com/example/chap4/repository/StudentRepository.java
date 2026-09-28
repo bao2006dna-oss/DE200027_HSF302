@@ -36,4 +36,10 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
 
     @Query("SELECT s FROM Student s WHERE LOWER(s.fullName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(s.email) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<Student> searchByNameOrEmailJPQL(@Param("keyword") String keyword);
+    // TODO 13: JOIN FETCH Department cùng với Student
+    @Query("SELECT s FROM Student s JOIN FETCH s.department WHERE s.active = true")
+    List<Student> findAllActiveWithDepartmentFetch();
+
+    @Query("SELECT s FROM Student s JOIN FETCH s.department WHERE s.department.code = :deptCode")
+    List<Student> findByDepartmentCodeFetch(@Param("deptCode") String deptCode);
 }
