@@ -47,4 +47,6 @@ public interface StudentService {
     List<Student> searchDynamic(StudentSearchCriteria criteria);
     // TODO 18
     Page<Student> searchDynamicPageable(StudentSearchCriteria criteria, int pageIndex, int size, String sortField, String sortDirection);
+    // TODO 19
+    List<Student> findStudentsWithComplexConditionCustom(String deptCode, double minGpa, boolean activeOnly);
 }

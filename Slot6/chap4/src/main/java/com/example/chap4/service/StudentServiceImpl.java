@@ -174,4 +174,10 @@ public class StudentServiceImpl implements StudentService {
 
         return studentRepository.findAll(StudentSpecification.filter(criteria), pageable);
     }
+
+
+    @Override
+    public List<Student> findStudentsWithComplexConditionCustom(String deptCode, double minGpa, boolean activeOnly) {
+        return studentRepository.findStudentsWithComplexConditionCustom(deptCode, minGpa, activeOnly);
+    }
 }

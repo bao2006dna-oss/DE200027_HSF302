@@ -38,6 +38,7 @@ public class ExerciseRunner implements CommandLineRunner {
         todo16();
         todo17();
         todo18();
+
     }
 
     private void title(String t) {
@@ -177,5 +178,11 @@ public class ExerciseRunner implements CommandLineRunner {
         System.out.printf("   Total elements: %d | Total pages: %d | Current page: %d%n",
                 page.getTotalElements(), page.getTotalPages(), page.getNumber());
         page.getContent().forEach(s -> System.out.println("   " + s));
+    }
+    private void todo19() {
+        title("TODO 19: Custom Repository Implementation");
+
+        printList("Custom Repo (dept='SE', minGpa=3.0, activeOnly=true)",
+                studentService.findStudentsWithComplexConditionCustom("SE", 3.0, true));
     }
 }
