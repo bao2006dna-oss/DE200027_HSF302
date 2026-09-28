@@ -1,5 +1,6 @@
 package com.example.chap4.service;
 
+import com.example.chap4.dto.StudentSummary;
 import com.example.chap4.pojo.Gender;
 import com.example.chap4.pojo.Student;
 import org.springframework.data.domain.Page;
@@ -34,4 +35,6 @@ public interface StudentService {
     // TODO 13
     List<Student> findAllActiveWithDepartment();
     List<Student> findByDeptCodeWithDepartment(String deptCode);
+    // TODO 14
+    List<StudentSummary> getStudentSummariesByDept(String deptCode);
 }

@@ -134,5 +134,12 @@ public class StudentServiceImpl implements StudentService {
         }
         return studentRepository.findByDepartmentCodeFetch(deptCode.trim().toUpperCase());
     }
+    @Override
+    public List<StudentSummary> getStudentSummariesByDept(String deptCode) {
+        if (deptCode == null || deptCode.isBlank()) {
+            return List.of();
+        }
+        return studentRepository.findSummaryByDepartmentCode(deptCode.trim().toUpperCase());
+    }
 
 }

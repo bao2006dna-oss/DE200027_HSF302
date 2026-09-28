@@ -1,5 +1,6 @@
 package com.example.chap4.runner;
 
+import com.example.chap4.dto.StudentSummary;
 import com.example.chap4.pojo.Gender;
 import com.example.chap4.pojo.Student;
 import com.example.chap4.service.DepartmentService;
@@ -31,7 +32,7 @@ public class ExerciseRunner implements CommandLineRunner {
         todo11();
         todo12();
         todo13();
-
+        todo14();
     }
 
     private void title(String t) {
@@ -114,5 +115,14 @@ public class ExerciseRunner implements CommandLineRunner {
 
         printList("All active students with Department fetched", studentService.findAllActiveWithDepartment());
         printList("Students in 'SE' with Department fetched", studentService.findByDeptCodeWithDepartment("SE"));
+    }
+    private void todo14() {
+        title("TODO 14: Projection (StudentSummary)");
+
+        List<StudentSummary> summaries = studentService.getStudentSummariesByDept("SE");
+        System.out.println("-- Student summaries in 'SE':");
+        summaries.forEach(s -> System.out.printf("   Code: %s | Name: %s | GPA: %.2f | Dept: %s%n",
+                s.getStudentCode(), s.getFullName(), s.getGpa(), s.getDepartmentName()));
+        System.out.println("   -> " + summaries.size() + " record(s)");
     }
 }

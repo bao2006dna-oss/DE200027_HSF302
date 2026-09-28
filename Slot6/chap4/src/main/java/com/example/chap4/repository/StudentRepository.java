@@ -1,5 +1,6 @@
 package com.example.chap4.repository;
 
+import com.example.chap4.dto.StudentSummary;
 import com.example.chap4.pojo.Gender;
 import com.example.chap4.pojo.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -42,4 +43,7 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
 
     @Query("SELECT s FROM Student s JOIN FETCH s.department WHERE s.department.code = :deptCode")
     List<Student> findByDepartmentCodeFetch(@Param("deptCode") String deptCode);
+    @Query("SELECT s.studentCode AS studentCode, s.fullName AS fullName, s.gpa AS gpa, s.department.name AS departmentName " +
+            "FROM Student s WHERE s.department.code = :deptCode")
+    List<StudentSummary> findSummaryByDepartmentCode(@Param("deptCode") String deptCode);
 }
