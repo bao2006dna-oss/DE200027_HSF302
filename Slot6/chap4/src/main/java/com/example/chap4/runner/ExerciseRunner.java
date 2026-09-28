@@ -1,5 +1,6 @@
 package com.example.chap4.runner;
 
+import com.example.chap4.dto.StudentSearchCriteria;
 import com.example.chap4.dto.StudentSummary;
 import com.example.chap4.pojo.Gender;
 import com.example.chap4.pojo.Student;
@@ -34,6 +35,8 @@ public class ExerciseRunner implements CommandLineRunner {
         todo13();
         todo14();
         todo15();
+        todo16();
+        todo17();
     }
 
     private void title(String t) {
@@ -76,6 +79,7 @@ public class ExerciseRunner implements CommandLineRunner {
                 + ", hasNext=" + page.hasNext()
                 + ", hasPrevious=" + page.hasPrevious());
     }
+
     private void todo8() {
         title("TODO 8: findBy / existsBy / countBy");
         for (String code : List.of("AI002", "XX999")) {
@@ -86,18 +90,21 @@ public class ExerciseRunner implements CommandLineRunner {
                 + studentService.isEmailExisted("binh.tt@fpt.edu.vn"));
         System.out.println("countActive -> " + studentService.countActive());
     }
+
     private void todo9() {
         title("TODO 9: Containing / EndingWith / IsNull");
         printList("fullName contains 'nguyen'", studentService.searchByName("nguyen"));
         printList("email domain 'gmail.com'", studentService.findByEmailDomain("gmail.com"));
         printList("email is null", studentService.findWithoutEmail());
     }
+
     private void todo10() {
         title("TODO 10: Between / And / True / After");
         printList("GPA in [3.0, 3.6] desc", studentService.findByGpaRange(3.0, 3.6));
         printList("MALE & active", studentService.findActiveByGender(Gender.MALE));
         printList("dob after 2005-01-01", studentService.findBornAfter(LocalDate.of(2005, 1, 1)));
     }
+
     private void todo11() {
         title("TODO 11: Nested Property / Top / IsEmpty");
 
@@ -105,18 +112,21 @@ public class ExerciseRunner implements CommandLineRunner {
         printList("Top 3 students by GPA desc", studentService.findTop3HighestGpa());
         printList("Departments without students", departmentService.findEmptyDepartments());
     }
+
     private void todo12() {
         title("TODO 12: JPQL Queries (@Query & @Param)");
 
         printList("Students in 'SE' with GPA >= 3.2", studentService.findByDeptAndMinGpa("SE", 3.2));
         printList("Search JPQL name/email contains 'binh'", studentService.searchByNameOrEmailJPQL("binh"));
     }
+
     private void todo13() {
         title("TODO 13: JOIN FETCH JPQL Queries");
 
         printList("All active students with Department fetched", studentService.findAllActiveWithDepartment());
         printList("Students in 'SE' with Department fetched", studentService.findByDeptCodeWithDepartment("SE"));
     }
+
     private void todo14() {
         title("TODO 14: Projection (StudentSummary)");
 
@@ -126,12 +136,14 @@ public class ExerciseRunner implements CommandLineRunner {
                 s.getStudentCode(), s.getFullName(), s.getGpa(), s.getDepartmentName()));
         System.out.println("   -> " + summaries.size() + " record(s)");
     }
+
     private void todo15() {
         title("TODO 15: Native SQL Query");
 
         printList("Active students with GPA >= 3.5 (Native SQL)",
                 studentService.findActiveStudentsWithMinGpaNative(3.5));
     }
+
     private void todo16() {
         title("TODO 16: Modifying Queries (UPDATE & DELETE)");
 
@@ -140,5 +152,16 @@ public class ExerciseRunner implements CommandLineRunner {
 
         int deletedCount = studentService.deleteInactiveStudentsByMinGpa(2.5);
         System.out.println("Deleted inactive students with GPA < 2.5: " + deletedCount + " row(s)");
+    }
+
+    private void todo17() {
+        title("TODO 17: Dynamic Query (JPA Specification)");
+
+        StudentSearchCriteria criteria = new StudentSearchCriteria();
+        criteria.setDeptCode("SE");
+        criteria.setMinGpa(3.0);
+        criteria.setActive(true);
+
+        printList("Dynamic filter (dept='SE', minGpa=3.0, active=true)", studentService.searchDynamic(criteria));
     }
 }

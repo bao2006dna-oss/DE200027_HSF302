@@ -1,5 +1,6 @@
 package com.example.chap4.service;
 
+import com.example.chap4.dto.StudentSearchCriteria;
 import com.example.chap4.dto.StudentSummary;
 import com.example.chap4.pojo.Gender;
 import com.example.chap4.pojo.Student;
@@ -42,4 +43,8 @@ public interface StudentService {
     // TODO 16
     int updateActiveByDeptCode(String deptCode, boolean active);
     int deleteInactiveStudentsByMinGpa(double minGpa);
+    // TODO 17
+    List<Student> searchDynamic(StudentSearchCriteria criteria);
+
+    List<Student> searchDynamic(StudentSearchCriteria criteria);
 }

@@ -1,9 +1,11 @@
 package com.example.chap4.service;
 
+import com.example.chap4.dto.StudentSearchCriteria;
 import com.example.chap4.dto.StudentSummary;
 import com.example.chap4.pojo.Gender;
 import com.example.chap4.pojo.Student;
 import com.example.chap4.repository.StudentRepository;
+import com.example.chap4.specification.StudentSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -148,4 +150,18 @@ public class StudentServiceImpl implements StudentService {
         return List.of();
     }
 
+    @Override
+    public int updateActiveByDeptCode(String deptCode, boolean active) {
+        return 0;
+    }
+
+    @Override
+    public int deleteInactiveStudentsByMinGpa(double minGpa) {
+        return 0;
+    }
+
+    @Override
+    public List<Student> searchDynamic(StudentSearchCriteria criteria) {
+        return studentRepository.findAll(StudentSpecification.filter(criteria));
+    }
 }
