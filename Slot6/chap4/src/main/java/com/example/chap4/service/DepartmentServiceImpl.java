@@ -47,4 +47,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<Department> findEmptyDepartments() {
         return departmentRepository.findByStudentsIsEmpty();
     }
+    @Override
+    public List<Student> findActiveStudentsWithMinGpaNative(double minGpa) {
+        return studentRepository.findActiveStudentsWithMinGpaNative(minGpa);
+    }
 }

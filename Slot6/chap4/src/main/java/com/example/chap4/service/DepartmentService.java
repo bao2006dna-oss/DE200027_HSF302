@@ -20,4 +20,6 @@ public interface DepartmentService {
 
     // TODO 11
     List<Department> findEmptyDepartments();
+
+    List<Student> findActiveStudentsWithMinGpaNative(double minGpa);
 }

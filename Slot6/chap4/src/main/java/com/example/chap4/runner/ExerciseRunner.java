@@ -33,6 +33,7 @@ public class ExerciseRunner implements CommandLineRunner {
         todo12();
         todo13();
         todo14();
+        todo15();
     }
 
     private void title(String t) {
@@ -124,5 +125,11 @@ public class ExerciseRunner implements CommandLineRunner {
         summaries.forEach(s -> System.out.printf("   Code: %s | Name: %s | GPA: %.2f | Dept: %s%n",
                 s.getStudentCode(), s.getFullName(), s.getGpa(), s.getDepartmentName()));
         System.out.println("   -> " + summaries.size() + " record(s)");
+    }
+    private void todo15() {
+        title("TODO 15: Native SQL Query");
+
+        printList("Active students with GPA >= 3.5 (Native SQL)",
+                studentService.findActiveStudentsWithMinGpaNative(3.5));
     }
 }

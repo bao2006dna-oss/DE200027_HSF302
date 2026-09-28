@@ -37,4 +37,6 @@ public interface StudentService {
     List<Student> findByDeptCodeWithDepartment(String deptCode);
     // TODO 14
     List<StudentSummary> getStudentSummariesByDept(String deptCode);
+    // TODO 15
+    List<Student> findActiveStudentsWithMinGpaNative(double minGpa);
 }

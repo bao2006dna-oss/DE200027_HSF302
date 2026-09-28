@@ -46,4 +46,7 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
     @Query("SELECT s.studentCode AS studentCode, s.fullName AS fullName, s.gpa AS gpa, s.department.name AS departmentName " +
             "FROM Student s WHERE s.department.code = :deptCode")
     List<StudentSummary> findSummaryByDepartmentCode(@Param("deptCode") String deptCode);
+    // TODO 15: Native SQL Query
+    @Query(value = "SELECT * FROM students s WHERE s.gpa >= :minGpa AND s.is_active = 1", nativeQuery = true)
+    List<Student> findActiveStudentsWithMinGpaNative(@Param("minGpa") double minGpa);
 }
