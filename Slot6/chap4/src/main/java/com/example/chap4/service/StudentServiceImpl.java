@@ -1,5 +1,6 @@
 package com.example.chap4.service;
 
+import com.example.chap4.dto.StudentSummary;
 import com.example.chap4.pojo.Gender;
 import com.example.chap4.pojo.Student;
 import com.example.chap4.repository.StudentRepository;
@@ -140,6 +141,11 @@ public class StudentServiceImpl implements StudentService {
             return List.of();
         }
         return studentRepository.findSummaryByDepartmentCode(deptCode.trim().toUpperCase());
+    }
+
+    @Override
+    public List<Student> findActiveStudentsWithMinGpaNative(double minGpa) {
+        return List.of();
     }
 
 }

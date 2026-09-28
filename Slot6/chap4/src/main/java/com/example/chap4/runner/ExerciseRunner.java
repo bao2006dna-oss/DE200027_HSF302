@@ -132,4 +132,13 @@ public class ExerciseRunner implements CommandLineRunner {
         printList("Active students with GPA >= 3.5 (Native SQL)",
                 studentService.findActiveStudentsWithMinGpaNative(3.5));
     }
+    private void todo16() {
+        title("TODO 16: Modifying Queries (UPDATE & DELETE)");
+
+        int updatedCount = studentService.updateActiveByDeptCode("BA", false);
+        System.out.println("Updated active=false for BA dept: " + updatedCount + " row(s)");
+
+        int deletedCount = studentService.deleteInactiveStudentsByMinGpa(2.5);
+        System.out.println("Deleted inactive students with GPA < 2.5: " + deletedCount + " row(s)");
+    }
 }

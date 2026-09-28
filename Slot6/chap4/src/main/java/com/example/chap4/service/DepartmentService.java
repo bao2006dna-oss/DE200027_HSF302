@@ -4,6 +4,7 @@ package com.example.chap4.service;
 import com.example.chap4.pojo.Department;
 import com.example.chap4.pojo.Gender;
 import com.example.chap4.pojo.Student;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,4 +23,10 @@ public interface DepartmentService {
     List<Department> findEmptyDepartments();
 
     List<Student> findActiveStudentsWithMinGpaNative(double minGpa);
+
+    @Transactional
+    int updateActiveByDeptCode(String deptCode, boolean active);
+
+    @Transactional
+    int deleteInactiveStudentsByMinGpa(double minGpa);
 }

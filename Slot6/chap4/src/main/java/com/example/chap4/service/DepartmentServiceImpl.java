@@ -51,4 +51,18 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<Student> findActiveStudentsWithMinGpaNative(double minGpa) {
         return studentRepository.findActiveStudentsWithMinGpaNative(minGpa);
     }
+    @Transactional
+    @Override
+    public int updateActiveByDeptCode(String deptCode, boolean active) {
+        if (deptCode == null || deptCode.isBlank()) {
+            return 0;
+        }
+        return studentRepository.updateActiveStatusByDepartmentCode(deptCode.trim().toUpperCase(), active);
+    }
+
+    @Transactional
+    @Override
+    public int deleteInactiveStudentsByMinGpa(double minGpa) {
+        return studentRepository.deleteInactiveStudentsWithGpaLessThan(minGpa);
+    }
 }

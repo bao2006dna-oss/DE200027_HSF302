@@ -39,4 +39,7 @@ public interface StudentService {
     List<StudentSummary> getStudentSummariesByDept(String deptCode);
     // TODO 15
     List<Student> findActiveStudentsWithMinGpaNative(double minGpa);
+    // TODO 16
+    int updateActiveByDeptCode(String deptCode, boolean active);
+    int deleteInactiveStudentsByMinGpa(double minGpa);
 }

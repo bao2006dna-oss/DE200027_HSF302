@@ -5,6 +5,7 @@ import com.example.chap4.pojo.Gender;
 import com.example.chap4.pojo.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -49,4 +50,11 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
     // TODO 15: Native SQL Query
     @Query(value = "SELECT * FROM students s WHERE s.gpa >= :minGpa AND s.is_active = 1", nativeQuery = true)
     List<Student> findActiveStudentsWithMinGpaNative(@Param("minGpa") double minGpa);
+    @Modifying
+    @Query("UPDATE Student s SET s.active = :active WHERE s.department.code = :deptCode")
+    int updateActiveStatusByDepartmentCode(@Param("deptCode") String deptCode, @Param("active") boolean active);
+
+    @Modifying
+    @Query("DELETE FROM Student s WHERE s.active = false AND s.gpa < :minGpa")
+    int deleteInactiveStudentsWithGpaLessThan(@Param("minGpa") double minGpa);
 }
