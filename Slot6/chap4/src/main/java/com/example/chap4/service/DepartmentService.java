@@ -29,4 +29,7 @@ public interface DepartmentService {
 
     @Transactional
     int deleteInactiveStudentsByMinGpa(double minGpa);
+    // TODO 22
+    int transferStudentsAndDelete(String fromCode, String toCode);
+    List<Department> findAll();
 }

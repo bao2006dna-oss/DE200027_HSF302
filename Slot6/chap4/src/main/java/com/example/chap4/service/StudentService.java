@@ -54,4 +54,6 @@ public interface StudentService {
     List<DepartmentStat> getDepartmentStatistics();
     // TODO 21
     int deactivateLowGpa(double threshold);
+
+    Long countByDepartment(String se);
 }

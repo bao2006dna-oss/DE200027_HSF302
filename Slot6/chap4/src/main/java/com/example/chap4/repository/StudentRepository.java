@@ -1,5 +1,5 @@
 package com.example.chap4.repository;
-
+import com.example.chap4.pojo.Department;
 import com.example.chap4.dto.DepartmentStat;
 import com.example.chap4.dto.StudentSummary;
 import com.example.chap4.pojo.Gender;
@@ -81,9 +81,11 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("UPDATE Student s SET s.active = false WHERE s.gpa < :threshold AND s.active = true")
     int deactivateLowGpa(@Param("threshold") double threshold);
+    // TODO 22: Transfer students from one department to another
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("UPDATE Student s SET s.department = :to WHERE s.department = :from")
+    int transferStudents(@Param("from") Department from, @Param("to") Department to);
 
 
-
-
-
+    Long countByDepartmentCode(String deptCode);
 }

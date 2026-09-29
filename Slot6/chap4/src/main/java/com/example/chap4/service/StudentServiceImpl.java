@@ -191,6 +191,10 @@ public class StudentServiceImpl implements StudentService {
     public int deactivateLowGpa(double threshold) {
         return studentRepository.deactivateLowGpa(threshold);
     }
+    @Override
+    public Long countByDepartment(String deptCode) {
+        return studentRepository.countByDepartmentCode(deptCode);
+    }
 
 
 }
