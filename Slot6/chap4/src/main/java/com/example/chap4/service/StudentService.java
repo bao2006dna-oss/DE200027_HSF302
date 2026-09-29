@@ -52,4 +52,6 @@ public interface StudentService {
     List<Student> findStudentsWithComplexConditionCustom(String deptCode, double minGpa, boolean activeOnly);
     // TODO 20
     List<DepartmentStat> getDepartmentStatistics();
+    // TODO 21
+    int deactivateLowGpa(double threshold);
 }

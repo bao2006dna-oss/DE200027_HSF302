@@ -39,6 +39,9 @@ public class ExerciseRunner implements CommandLineRunner {
         todo16();
         todo17();
         todo18();
+        todo19();
+        todo20();
+        todo21();
 
     }
 
@@ -193,5 +196,11 @@ public class ExerciseRunner implements CommandLineRunner {
         System.out.println("-- Department Student Statistics:");
         stats.forEach(st -> System.out.printf("   Dept: %s (%s) | Students: %d | Avg GPA: %.2f%n",
                 st.getDepartmentCode(), st.getDepartmentName(), st.getStudentCount(), st.getAvgGpa()));
+    }
+    private void todo21() {
+        title("TODO 21: @Modifying UPDATE");
+        int rows = studentService.deactivateLowGpa(2.5);
+        System.out.println("Rows affected: " + rows);
+        System.out.println("Active students now: " + studentService.countActive());
     }
 }

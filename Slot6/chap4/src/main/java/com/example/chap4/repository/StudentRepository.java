@@ -77,7 +77,10 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
             "GROUP BY s.department.code, s.department.name")
     List<DepartmentStat> getDepartmentStatistics();
 
-
+    // TODO 21: @Modifying UPDATE
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("UPDATE Student s SET s.active = false WHERE s.gpa < :threshold AND s.active = true")
+    int deactivateLowGpa(@Param("threshold") double threshold);
 
 
 

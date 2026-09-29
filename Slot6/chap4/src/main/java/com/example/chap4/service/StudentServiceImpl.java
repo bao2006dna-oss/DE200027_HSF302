@@ -186,6 +186,11 @@ public class StudentServiceImpl implements StudentService {
     public List<DepartmentStat> getDepartmentStatistics() {
         return studentRepository.getDepartmentStatistics();
     }
+    @Override
+    @Transactional
+    public int deactivateLowGpa(double threshold) {
+        return studentRepository.deactivateLowGpa(threshold);
+    }
 
 
 }
