@@ -195,6 +195,10 @@ public class StudentServiceImpl implements StudentService {
     public Long countByDepartment(String deptCode) {
         return studentRepository.countByDepartmentCode(deptCode);
     }
-
+    @Override
+    @Transactional
+    public long deleteInactiveStudents() {
+        return studentRepository.deleteByActiveFalse();
+    }
 
 }

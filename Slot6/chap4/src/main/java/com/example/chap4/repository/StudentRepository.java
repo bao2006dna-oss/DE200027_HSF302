@@ -88,4 +88,6 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
 
 
     Long countByDepartmentCode(String deptCode);
+    // TODO 23: Derived delete
+    long deleteByActiveFalse();
 }

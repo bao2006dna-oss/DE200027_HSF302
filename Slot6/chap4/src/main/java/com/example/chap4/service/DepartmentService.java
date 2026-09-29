@@ -7,6 +7,7 @@ import com.example.chap4.pojo.Student;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 
 public interface DepartmentService {
@@ -32,4 +33,6 @@ public interface DepartmentService {
     // TODO 22
     int transferStudentsAndDelete(String fromCode, String toCode);
     List<Department> findAll();
+
+    Collection<?> getDepartmentStatistics();
 }

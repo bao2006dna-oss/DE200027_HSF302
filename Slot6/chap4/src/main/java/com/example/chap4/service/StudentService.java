@@ -56,4 +56,6 @@ public interface StudentService {
     int deactivateLowGpa(double threshold);
 
     Long countByDepartment(String se);
+    // TODO 23
+    long deleteInactiveStudents();
 }
