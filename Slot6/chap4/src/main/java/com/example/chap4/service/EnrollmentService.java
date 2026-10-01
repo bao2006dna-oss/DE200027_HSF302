@@ -1,5 +1,6 @@
 package com.example.chap4.service;
 
+import com.example.chap4.dto.StudentCreditDTO;
 import com.example.chap4.pojo.Course;
 import com.example.chap4.pojo.Student;
 
@@ -19,4 +20,6 @@ public interface EnrollmentService {
     boolean isEnrolled(String studentCode, String courseCode);
     // ===== TODO 12 =====
     List<Student> findGoodStudentsInCourse(String courseCode, double minGpa);
+    // ===== TODO 14 =====
+    List<StudentCreditDTO> getCreditSummary(int minCredits);
 }
