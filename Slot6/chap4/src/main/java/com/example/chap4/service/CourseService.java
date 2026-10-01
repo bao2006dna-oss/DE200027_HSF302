@@ -1,5 +1,6 @@
 package com.example.chap4.service;
 
+import com.example.chap4.dto.CourseStatDTO;
 import com.example.chap4.pojo.Course;
 
 
@@ -22,4 +23,6 @@ public interface CourseService {
     List<Course> findCoursesOfDepartment(String deptCode, boolean distinct);
     // ===== TODO 11 =====
     List<Course> findCoursesWithoutStudents();
+    // ===== TODO 13 =====
+    List<CourseStatDTO> getStatistics();
 }

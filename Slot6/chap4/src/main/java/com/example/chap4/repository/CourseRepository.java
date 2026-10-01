@@ -1,8 +1,10 @@
 package com.example.chap4.repository;
 
+import com.example.chap4.dto.CourseStatDTO;
 import com.example.chap4.pojo.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,4 +24,9 @@ public interface CourseRepository extends JpaRepository<Course, Long>, JpaSpecif
     // loại trùng
     // ===== TODO 11 =====
     List<Course> findByStudentsIsEmpty();
+    // ===== TODO 13 =====
+    @Query("SELECT new com.example.chap4.dto.CourseStatDTO(c.code, c.name, c.capacity, COUNT(s), AVG(s.gpa)) " +
+            "FROM Course c LEFT JOIN c.students s " +
+            "GROUP BY c.code, c.name, c.capacity ORDER BY c.code")
+    List<CourseStatDTO> getCourseStats();
 }

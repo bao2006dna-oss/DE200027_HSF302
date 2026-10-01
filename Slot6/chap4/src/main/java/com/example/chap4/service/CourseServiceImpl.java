@@ -1,5 +1,6 @@
 package com.example.chap4.service;
 
+import com.example.chap4.dto.CourseStatDTO;
 import com.example.chap4.pojo.Course;
 import com.example.chap4.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
@@ -63,5 +64,10 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> findCoursesWithoutStudents() {
         return courseRepository.findByStudentsIsEmpty();
+    }
+    // ===== TODO 13 =====
+    @Override
+    public List<CourseStatDTO> getStatistics() {
+        return courseRepository.getCourseStats();
     }
 }
