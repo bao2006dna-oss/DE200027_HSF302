@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "students")
@@ -55,5 +57,27 @@ public class Student {
                 ", gpa=" + gpa +
                 ", active=" + active +
                 '}';
+    }
+    // Bổ sung các import này nếu trong class chưa có
+
+
+    // Bên trong class Student, thêm trường courses:
+    @ManyToMany
+    @JoinTable(
+            name = "student_courses",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private Set<Course> courses = new HashSet<>();
+
+    // Thêm 2 hàm helper đồng bộ 2 chiều:
+    public void enroll(Course c) {
+        courses.add(c);
+        c.getStudents().add(this);
+    }
+
+    public void unenroll(Course c) {
+        courses.remove(c);
+        c.getStudents().remove(this);
     }
 }
