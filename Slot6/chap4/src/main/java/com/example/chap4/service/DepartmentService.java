@@ -35,4 +35,5 @@ public interface DepartmentService {
     List<Department> findAll();
 
     Collection<?> getDepartmentStatistics();
+
 }
