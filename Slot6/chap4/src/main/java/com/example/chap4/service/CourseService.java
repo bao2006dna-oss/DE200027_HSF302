@@ -11,4 +11,6 @@ public interface CourseService {
     long count();
     List<Course> findAllOrderByCode();
     Optional<Course> findById(Long id);
+    // TODO 7 & 8: Derived query tìm môn học theo mã code
+    Optional<Course> findByCode(String code);
 }
