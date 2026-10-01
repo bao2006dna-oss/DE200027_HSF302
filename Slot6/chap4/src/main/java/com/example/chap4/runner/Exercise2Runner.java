@@ -1,5 +1,6 @@
 package com.example.chap4.runner;
 
+import com.example.chap4.pojo.Course;
 import com.example.chap4.service.CourseService;
 import com.example.chap4.service.EnrollmentService;
 import com.example.chap4.service.StudentService;
@@ -10,6 +11,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.List;
 
 @Component
 @Order(3)
@@ -36,7 +38,8 @@ public class Exercise2Runner implements CommandLineRunner {
         // todo7();
     }
 
-    private void partC() { /* todo8(); todo9(); todo10(); todo11(); */ }
+
+    private void partC() { todo8(); todo9(); todo10(); todo11(); }
     private void partD() { /* todo12(); todo13(); todo14(); todo15(); todo16(); todo17(); todo18(); todo19(); */ }
     private void bonus() { /* todo25(); */ }
     private void partE() { /* todo20(); todo21(); todo22(); todo23(); todo24(); */ }
@@ -69,5 +72,20 @@ public class Exercise2Runner implements CommandLineRunner {
             System.out.println("findById(" + id + "): "
                     + courseService.findById(id).map(Course::toString).orElse("Not found"));
         }
+    }
+    private void todo7() {
+        title("TODO 7: navigate student.getCourses() / course.getStudents()");
+        printList("(a) Courses of SE001", enrollmentService.getCoursesOfStudent("SE001"));
+        printList("(b) Students of AIL303", enrollmentService.getStudentsOfCourse("AIL303"));
+    }
+    // ===== TODO 8 =====
+    private void todo8() {
+        title("TODO 8: findByCode, findBySemester, countBySemester");
+        for (String code : List.of("HSF302", "XXX000")) {
+            System.out.println("(a) " + code + ": "
+                    + courseService.findByCode(code).map(Course::getName).orElse("Not found"));
+        }
+        printList("(b) Semester SU26", courseService.findBySemester("SU26"));
+        System.out.println("(c) Courses in FA26: " + courseService.countBySemester("FA26"));
     }
 }
