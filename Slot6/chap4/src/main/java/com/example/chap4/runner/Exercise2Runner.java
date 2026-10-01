@@ -60,4 +60,14 @@ public class Exercise2Runner implements CommandLineRunner {
             System.out.println("   [FAIL] " + label + " -> " + e.getMessage());
         }
     }
+    // ===== TODO 6 =====
+    private void todo6() {
+        title("TODO 6: count, findAll(Sort), findById");
+        System.out.println("Total courses: " + courseService.count());
+        printList("All courses order by code", courseService.findAllOrderByCode());
+        for (long id : new long[]{2L, 99L}) {
+            System.out.println("findById(" + id + "): "
+                    + courseService.findById(id).map(Course::toString).orElse("Not found"));
+        }
+    }
 }
