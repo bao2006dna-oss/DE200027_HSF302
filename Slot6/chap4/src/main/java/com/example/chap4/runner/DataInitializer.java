@@ -60,7 +60,7 @@ public class DataInitializer implements CommandLineRunner {
         s.setDob(LocalDate.parse(dob));
         s.setGpa(gpa);
         s.setActive(active);
-        dept.addStudent(s);
+        s.setDepartment(dept);
         return s;
     }
 }
