@@ -1,4 +1,5 @@
 package com.example.chap4.repository;
+import com.example.chap4.dto.StudentCreditDTO;
 import com.example.chap4.pojo.Department;
 import com.example.chap4.dto.DepartmentStat;
 import com.example.chap4.dto.StudentSummary;
@@ -109,4 +110,7 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
             "HAVING SUM(c.credits) >= :minCredits " +
             "ORDER BY SUM(c.credits) DESC, s.fullName")
     List<StudentCreditDTO> getCreditSummary(@Param("minCredits") long minCredits);
+    // ===== Exercise 2 — TODO 15 =====
+    @Query("SELECT s FROM Student s WHERE SIZE(s.courses) > :n ORDER BY s.fullName")
+    List<Student> findStudentsWithMoreThanNCourses(@Param("n") int n);
 }

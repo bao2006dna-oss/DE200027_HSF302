@@ -133,4 +133,10 @@ public class Exercise2Runner implements CommandLineRunner {
                 "    %s | %-15s | %d course(s) | %d credits%n",
                 d.studentCode(), d.fullName(), d.courseCount(), d.totalCredits()));
     }
+    // ===== TODO 15 =====
+    private void todo15() {
+        title("TODO 15: SIZE() on collections");
+        printList("(a) Full courses", courseService.findFullCourses());
+        printList("(b) Students with more than 2 courses", enrollmentService.findStudentsWithMoreThan(2));
+    }
 }
