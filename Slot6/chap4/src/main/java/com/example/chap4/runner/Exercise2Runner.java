@@ -207,4 +207,11 @@ public class Exercise2Runner implements CommandLineRunner {
         printList("Courses of IA003", enrollmentService.getCoursesOfStudent("IA003"));
         System.out.println("Students of MKT101: " + enrollmentService.countStudentsInCourse("MKT101"));
     }
+    // ===== TODO 21 =====
+    private void todo21() {
+        title("TODO 21: unenroll");
+        attempt("unenroll SE001 -> PRJ301", () -> enrollmentService.unenroll("SE001", "PRJ301"));
+        attempt("unenroll SE001 -> PRJ301 (again)", () -> enrollmentService.unenroll("SE001", "PRJ301"));
+        printList("Courses of SE001 after unenroll", enrollmentService.getCoursesOfStudent("SE001"));
+    }
 }
