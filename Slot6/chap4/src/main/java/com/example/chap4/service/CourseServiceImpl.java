@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,5 +90,16 @@ public class CourseServiceImpl implements CourseService {
             throw new IllegalArgumentException("n must be > 0");
         }
         return courseRepository.findTopEnrolledNative(n);
+    }
+    // ===== TODO 23 =====
+    @Override
+    @Transactional
+    public void deleteByCode(String code) {
+        Course c = courseRepository.findByCode(code)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found: " + code));
+
+        // Đảm bảo gỡ liên kết 2 chiều với tất cả sinh viên trước khi xóa course
+        new HashSet<>(c.getStudents()).forEach(s -> s.unenroll(c));
+        courseRepository.delete(c);
     }
 }

@@ -32,5 +32,6 @@ public interface CourseService {
     Course getWithStudents(String code);
     // ===== TODO 17 =====
     List<CourseEnrollmentCount> findTopEnrolled(int n);
-
+    // ===== TODO 23 =====
+    void deleteByCode(String code);
 }

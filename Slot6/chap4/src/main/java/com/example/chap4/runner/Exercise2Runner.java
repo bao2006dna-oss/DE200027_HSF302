@@ -2,10 +2,12 @@ package com.example.chap4.runner;
 
 import com.example.chap4.pojo.Course;
 import com.example.chap4.pojo.Student;
+import com.example.chap4.repository.CourseRepository;
 import com.example.chap4.service.CourseService;
 import com.example.chap4.service.EnrollmentService;
 import com.example.chap4.service.StudentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
@@ -27,7 +29,8 @@ public class Exercise2Runner implements CommandLineRunner {
     private final CourseService courseService;
     private final EnrollmentService enrollmentService;
     private final StudentService studentService;
-
+    @Autowired // Hoặc inject qua Constructor/Lombok @RequiredArgsConstructor
+    private CourseRepository courseRepository;
     @Override
     public void run(String... args) {
         partB();
@@ -226,5 +229,15 @@ public class Exercise2Runner implements CommandLineRunner {
                 () -> enrollmentService.switchCourse("SE001", "SWP391", "IAA202"));
 
         printList("Courses of SE001 after switch", enrollmentService.getCoursesOfStudent("SE001"));
+    }
+    // ===== TODO 23 =====
+    private void todo23() {
+        title("TODO 23: delete course and verify cascading join table cleanup");
+        System.out.println("Students in MKT101 before delete: " + enrollmentService.countStudentsInCourse("MKT101"));
+
+        attempt("delete course MKT101", () -> courseService.deleteByCode("MKT101"));
+
+        System.out.println("Course MKT101 exists? " + courseRepository.findByCode("MKT101").isPresent());
+        printList("Courses of IA003 after MKT101 deleted", enrollmentService.getCoursesOfStudent("IA003"));
     }
 }
