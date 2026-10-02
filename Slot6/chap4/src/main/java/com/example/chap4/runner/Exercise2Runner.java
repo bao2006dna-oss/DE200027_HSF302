@@ -240,4 +240,10 @@ public class Exercise2Runner implements CommandLineRunner {
         System.out.println("Course MKT101 exists? " + courseRepository.findByCode("MKT101").isPresent());
         printList("Courses of IA003 after MKT101 deleted", enrollmentService.getCoursesOfStudent("IA003"));
     }
+    // ===== TODO 24 =====
+    private void todo24() {
+        title("TODO 24: bulk delete enrollments of inactive students");
+        int removed = enrollmentService.removeEnrollmentsOfInactiveStudents();
+        System.out.println("Removed enrollments count = " + removed);
+    }
 }

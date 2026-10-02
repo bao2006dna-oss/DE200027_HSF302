@@ -182,5 +182,11 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         s.unenroll(from);
         checkAndEnroll(s, to);
     }
+    // ===== TODO 24 =====
+    @Override
+    @Transactional
+    public int removeEnrollmentsOfInactiveStudents() {
+        return studentRepository.deleteEnrollmentsOfInactiveStudents();
+    }
 
 }
