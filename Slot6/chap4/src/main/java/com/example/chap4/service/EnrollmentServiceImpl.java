@@ -8,6 +8,10 @@ import com.example.chap4.pojo.Student;
 import com.example.chap4.repository.CourseRepository;
 import com.example.chap4.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -115,6 +119,40 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     @Override
     public List<EnrollmentView> getEnrollmentsOfDepartment(String deptCode) {
         return studentRepository.findEnrollmentsOfDepartment(deptCode);
+    }
+    // ===== TODO 19 =====
+    @Override
+    public Page<Student> findStudentsInCoursePage(String courseCode, int pageIndex, int size) {
+        if (pageIndex < 0 || size <= 0) {
+            throw new IllegalArgumentException("pageIndex must be >= 0 and size must be > 0");
+        }
+        Pageable pageable = PageRequest.of(pageIndex, size, Sort.by("fullName"));
+        return studentRepository.findPageByCourseCode(courseCode, pageable);
+    }
+    // ===== TODO 20 =====
+    @Override
+    @Transactional
+    public void enroll(String studentCode, String courseCode) {
+        Student s = getStudent(studentCode);
+        Course c = getCourse(courseCode);
+        checkAndEnroll(s, c);
+    }
+
+    /** Helper kiểm tra quy tắc nghiệp vụ rồi mới đăng ký */
+    private void checkAndEnroll(Student s, Course c) {
+        if (!s.isActive()) {
+            throw new IllegalStateException("Student " + s.getStudentCode() + " is inactive");
+        }
+        if (s.getCourses().contains(c)) {
+            throw new IllegalStateException("Student " + s.getStudentCode()
+                    + " already enrolled in " + c.getCode());
+        }
+        int enrolled = c.getStudents().size();
+        if (enrolled >= c.getCapacity()) {
+            throw new IllegalStateException("Course " + c.getCode()
+                    + " is full (" + enrolled + "/" + c.getCapacity() + ")");
+        }
+        s.enroll(c); // Gọi helper 2 chiều trong Student entity
     }
 
 }

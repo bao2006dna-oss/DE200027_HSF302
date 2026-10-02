@@ -6,6 +6,8 @@ import com.example.chap4.dto.DepartmentStat;
 import com.example.chap4.dto.StudentSummary;
 import com.example.chap4.pojo.Gender;
 import com.example.chap4.pojo.Student;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -124,4 +126,11 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
             "WHERE d.code = :deptCode " +
             "ORDER BY s.studentCode, c.code")
     List<EnrollmentView> findEnrollmentsOfDepartment(@Param("deptCode") String deptCode);
+    // ===== Exercise 2 — TODO 19 =====
+    @Query(value = "SELECT s FROM Student s JOIN s.courses c WHERE c.code = :code",
+            countQuery = "SELECT COUNT(s) FROM Student s JOIN s.courses c WHERE c.code = :code")
+    Page<Student> findPageByCourseCode(@Param("code") String courseCode, Pageable pageable);
+
+
+
 }

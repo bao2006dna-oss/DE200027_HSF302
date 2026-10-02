@@ -80,4 +80,8 @@ public class Student {
         courses.remove(c);
         c.getStudents().remove(this);
     }
+    // Helper method kiểm tra active không bị null
+    public boolean isActive() {
+        return Boolean.TRUE.equals(this.active);
+    }
 }
