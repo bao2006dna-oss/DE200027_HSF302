@@ -1,7 +1,6 @@
 package com.example.chap4.pojo;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,40 +13,24 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Department {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 10, nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 10)
     private String code;
 
-    @Column(length = 100, nullable = false)
+    @Column(nullable = false, length = 100)
     private String name;
 
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
     private List<Student> students = new ArrayList<>();
 
-    public Department(String se, String softwareEngineering) {
-    }
-
-    // Helper method đồng bộ 2 chiều
-    public void addStudent(Student student) {
-        if (students == null) {
-            students = new ArrayList<>();
-        }
-        students.add(student);
-        student.setDepartment(this);
-    }
-
-    @Override
-    public String toString() {
-        return "Department{" +
-                "id=" + id +
-                ", code='" + code + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+    // CONSTRUCTOR BẮT BUỘC ĐỂ GÁN ĐỦ CODE VÀ NAME
+    public Department(String code, String name) {
+        this.code = code;
+        this.name = name;
     }
 }

@@ -1,0 +1,43 @@
+package com.example.chap4.service;
+
+import com.example.chap4.dto.EnrollmentView;
+import com.example.chap4.dto.StudentCreditDTO;
+import com.example.chap4.pojo.Course;
+import com.example.chap4.pojo.Student;
+import org.springframework.data.domain.Page;
+
+import java.util.List;
+
+public interface EnrollmentService {
+    // Khai báo các method ở các TODO tiếp theo
+    // ===== TODO 7 =====
+    List<Course> getCoursesOfStudent(String studentCode);
+    List<Student> getStudentsOfCourse(String courseCode);
+    // ===== TODO 9 =====
+    List<Student> findStudentsInCourse(String courseCode);
+    long countStudentsInCourse(String courseCode);
+    List<Student> findActiveStudentsInCourse(String courseCode);
+    // ===== TODO 11 =====
+    List<Student> findStudentsWithoutCourses();
+    boolean isEnrolled(String studentCode, String courseCode);
+    // ===== TODO 12 =====
+    List<Student> findGoodStudentsInCourse(String courseCode, double minGpa);
+    // ===== TODO 14 =====
+    List<StudentCreditDTO> getCreditSummary(int minCredits);
+    // ===== TODO 15 =====
+    List<Student> findStudentsWithMoreThan(int n);
+    // ===== TODO 16 =====
+    Student getStudentWithCourses(String studentCode);
+    // ===== TODO 18 =====
+    List<EnrollmentView> getEnrollmentsOfDepartment(String deptCode);
+    // ===== TODO 19 =====
+    Page<Student> findStudentsInCoursePage(String courseCode, int pageIndex, int size);
+    // ===== TODO 20 =====
+    void enroll(String studentCode, String courseCode);
+    // ===== TODO 21 =====
+    void unenroll(String studentCode, String courseCode);
+    // ===== TODO 22 =====
+    void switchCourse(String studentCode, String fromCode, String toCode);
+    // ===== TODO 24 =====
+    int removeEnrollmentsOfInactiveStudents();
+}

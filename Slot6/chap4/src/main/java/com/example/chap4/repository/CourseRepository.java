@@ -1,0 +1,48 @@
+package com.example.chap4.repository;
+
+import com.example.chap4.dto.CourseEnrollmentCount;
+import com.example.chap4.dto.CourseStatDTO;
+import com.example.chap4.pojo.Course;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface CourseRepository extends JpaRepository<Course, Long>, JpaSpecificationExecutor<Course> {
+    Optional<Course> findByCode(String code);
+    boolean existsByCode(String code);
+    // TODO 8
+    List<Course> findBySemesterOrderByCodeAsc(String semester);
+    long countBySemester(String semester);
+    // ===== TODO 10 =====
+    List<Course> findByStudents_StudentCodeOrderByCodeAsc(String studentCode);
+    List<Course> findByStudents_Department_CodeOrderByCodeAsc(String deptCode);         // có thể TRÙNG
+    List<Course> findDistinctByStudents_Department_CodeOrderByCodeAsc(String deptCode);
+    // loại trùng
+    // ===== TODO 11 =====
+    List<Course> findByStudentsIsEmpty();
+    // ===== TODO 13 =====
+    @Query("SELECT new com.example.chap4.dto.CourseStatDTO(c.code, c.name, c.capacity, COUNT(s), AVG(s.gpa)) " +
+            "FROM Course c LEFT JOIN c.students s " +
+            "GROUP BY c.code, c.name, c.capacity ORDER BY c.code")
+    List<CourseStatDTO> getCourseStats();
+    // ===== TODO 15 =====
+    @Query("SELECT c FROM Course c WHERE SIZE(c.students) >= c.capacity ORDER BY c.code")
+    List<Course> findFullCourses();
+    // ===== TODO 16 =====
+    @EntityGraph(attributePaths = "students")
+    Optional<Course> findWithStudentsByCode(String code);
+    // ===== TODO 17 =====
+    @Query(value = "SELECT TOP (:n) c.code AS code, c.name AS name, COUNT(sc.student_id) AS enrolled " +
+            "FROM courses c LEFT JOIN student_courses sc ON sc.course_id = c.id " +
+            "GROUP BY c.code, c.name " +
+            "ORDER BY enrolled DESC, c.code",
+            nativeQuery = true)
+    List<CourseEnrollmentCount> findTopEnrolledNative(@Param("n") int n);
+}

@@ -1,9 +1,13 @@
 package com.example.chap4.repository;
+import com.example.chap4.dto.EnrollmentView;
+import com.example.chap4.dto.StudentCreditDTO;
 import com.example.chap4.pojo.Department;
 import com.example.chap4.dto.DepartmentStat;
 import com.example.chap4.dto.StudentSummary;
 import com.example.chap4.pojo.Gender;
 import com.example.chap4.pojo.Student;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -90,4 +94,48 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
     Long countByDepartmentCode(String deptCode);
     // TODO 23: Derived delete
     long deleteByActiveFalse();
+    // ===== Exercise 2 — TODO 9 =====
+    List<Student> findByCourses_CodeOrderByFullNameAsc(String courseCode);
+    long countByCourses_Code(String courseCode);
+    List<Student> findByCourses_CodeAndActiveTrueOrderByFullNameAsc(String courseCode);
+    // ===== Exercise 2 — TODO 11 =====
+    List<Student> findByCoursesIsEmptyOrderByFullNameAsc();
+    boolean existsByStudentCodeAndCourses_Code(String studentCode, String courseCode);
+    // ===== Exercise 2 — TODO 12 =====
+    @Query("SELECT s FROM Student s JOIN s.courses c " +
+            "WHERE c.code = :code AND s.gpa >= :minGpa ORDER BY s.gpa DESC")
+    List<Student> findGoodStudentsInCourse(@Param("code") String courseCode,
+                                           @Param("minGpa") double minGpa);
+    // ===== TODO 14 =====
+    @Query("SELECT new com.example.chap4.dto.StudentCreditDTO(s.studentCode, s.fullName, COUNT(c), SUM(c.credits)) " +
+            "FROM Student s JOIN s.courses c " +
+            "GROUP BY s.studentCode, s.fullName " +
+            "HAVING SUM(c.credits) >= :minCredits " +
+            "ORDER BY SUM(c.credits) DESC, s.fullName")
+    List<StudentCreditDTO> getCreditSummary(@Param("minCredits") long minCredits);
+    // ===== Exercise 2 — TODO 15 =====
+    @Query("SELECT s FROM Student s WHERE SIZE(s.courses) > :n ORDER BY s.fullName")
+    List<Student> findStudentsWithMoreThanNCourses(@Param("n") int n);
+    // ===== Exercise 2 — TODO 16 =====
+    @Query("SELECT s FROM Student s LEFT JOIN FETCH s.courses WHERE s.studentCode = :code")
+    Optional<Student> findByStudentCodeWithCourses(@Param("code") String studentCode);
+    // ===== Exercise 2 — TODO 18 =====
+    @Query("SELECT s.studentCode AS studentCode, s.fullName AS fullName, " +
+            "       c.code AS courseCode, c.name AS courseName, c.credits AS credits " +
+            "FROM Student s JOIN s.department d JOIN s.courses c " +
+            "WHERE d.code = :deptCode " +
+            "ORDER BY s.studentCode, c.code")
+    List<EnrollmentView> findEnrollmentsOfDepartment(@Param("deptCode") String deptCode);
+    // ===== Exercise 2 — TODO 19 =====
+    @Query(value = "SELECT s FROM Student s JOIN s.courses c WHERE c.code = :code",
+            countQuery = "SELECT COUNT(s) FROM Student s JOIN s.courses c WHERE c.code = :code")
+    Page<Student> findPageByCourseCode(@Param("code") String courseCode, Pageable pageable);
+    // ===== Exercise 2 — TODO 24 =====
+    @Modifying
+    @Query(value = "DELETE FROM student_courses " +
+            "WHERE student_id IN (SELECT id FROM students WHERE active = 0 OR active IS NULL)",
+            nativeQuery = true)
+    int deleteEnrollmentsOfInactiveStudents();
+
+
 }

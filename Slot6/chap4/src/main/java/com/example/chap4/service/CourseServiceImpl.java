@@ -1,0 +1,105 @@
+package com.example.chap4.service;
+
+import com.example.chap4.dto.CourseEnrollmentCount;
+import com.example.chap4.dto.CourseStatDTO;
+import com.example.chap4.pojo.Course;
+import com.example.chap4.repository.CourseRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class CourseServiceImpl implements CourseService {
+
+    private final CourseRepository courseRepository;
+
+    @Override
+    public long count() {
+        return courseRepository.count();
+    }
+
+    @Override
+    public List<Course> findAllOrderByCode() {
+        return courseRepository.findAll(Sort.by("code"));
+    }
+
+    @Override
+    public Optional<Course> findById(Long id) {
+        return courseRepository.findById(id);
+    }
+    // ===== TODO 8 =====
+    @Override
+    public Optional<Course> findByCode(String code) {
+        return courseRepository.findByCode(code);
+    }
+
+    @Override
+    public List<Course> findBySemester(String semester) {
+        return courseRepository.findBySemesterOrderByCodeAsc(semester);
+    }
+
+    @Override
+    public long countBySemester(String semester) {
+        return courseRepository.countBySemester(semester);
+
+    }
+    // ===== TODO 10 =====
+    @Override
+    public List<Course> findCoursesOfStudent(String studentCode) {
+        return courseRepository.findByStudents_StudentCodeOrderByCodeAsc(studentCode);
+    }
+
+    @Override
+    public List<Course> findCoursesOfDepartment(String deptCode, boolean distinct) {
+        return distinct
+                ? courseRepository.findDistinctByStudents_Department_CodeOrderByCodeAsc(deptCode)
+                : courseRepository.findByStudents_Department_CodeOrderByCodeAsc(deptCode);
+    }
+    // ===== TODO 11 =====
+    @Override
+    public List<Course> findCoursesWithoutStudents() {
+        return courseRepository.findByStudentsIsEmpty();
+    }
+    // ===== TODO 13 =====
+    @Override
+    public List<CourseStatDTO> getStatistics() {
+        return courseRepository.getCourseStats();
+    }
+    // ===== TODO 15 =====
+    @Override
+    public List<Course> findFullCourses() {
+        return courseRepository.findFullCourses();
+    }
+    // ===== TODO 16 =====
+    @Override
+    public Course getWithStudents(String code) {
+        return courseRepository.findWithStudentsByCode(code)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found: " + code));
+    }
+    // ===== TODO 17 =====
+    @Override
+    public List<CourseEnrollmentCount> findTopEnrolled(int n) {
+        if (n <= 0) {
+            throw new IllegalArgumentException("n must be > 0");
+        }
+        return courseRepository.findTopEnrolledNative(n);
+    }
+    // ===== TODO 23 =====
+    @Override
+    @Transactional
+    public void deleteByCode(String code) {
+        Course c = courseRepository.findByCode(code)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found: " + code));
+
+        // Đảm bảo gỡ liên kết 2 chiều với tất cả sinh viên trước khi xóa course
+        new HashSet<>(c.getStudents()).forEach(s -> s.unenroll(c));
+        courseRepository.delete(c);
+    }
+}
