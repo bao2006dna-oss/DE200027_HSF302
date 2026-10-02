@@ -1,6 +1,7 @@
 
 package com.example.chap4.service;
 
+import com.example.chap4.dto.EnrollmentView;
 import com.example.chap4.dto.StudentCreditDTO;
 import com.example.chap4.pojo.Course;
 import com.example.chap4.pojo.Student;
@@ -109,6 +110,11 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     public Student getStudentWithCourses(String studentCode) {
         return studentRepository.findByStudentCodeWithCourses(studentCode)
                 .orElseThrow(() -> new IllegalArgumentException("Student not found: " + studentCode));
+    }
+    // ===== TODO 18 =====
+    @Override
+    public List<EnrollmentView> getEnrollmentsOfDepartment(String deptCode) {
+        return studentRepository.findEnrollmentsOfDepartment(deptCode);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.chap4.service;
 
+import com.example.chap4.dto.EnrollmentView;
 import com.example.chap4.dto.StudentCreditDTO;
 import com.example.chap4.pojo.Course;
 import com.example.chap4.pojo.Student;
@@ -26,4 +27,6 @@ public interface EnrollmentService {
     List<Student> findStudentsWithMoreThan(int n);
     // ===== TODO 16 =====
     Student getStudentWithCourses(String studentCode);
+    // ===== TODO 18 =====
+    List<EnrollmentView> getEnrollmentsOfDepartment(String deptCode);
 }
