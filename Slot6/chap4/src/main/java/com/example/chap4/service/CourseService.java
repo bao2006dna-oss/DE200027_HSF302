@@ -1,5 +1,6 @@
 package com.example.chap4.service;
 
+import com.example.chap4.dto.CourseEnrollmentCount;
 import com.example.chap4.dto.CourseStatDTO;
 import com.example.chap4.pojo.Course;
 
@@ -27,4 +28,9 @@ public interface CourseService {
     List<CourseStatDTO> getStatistics();
     // ===== TODO 15 =====
     List<Course> findFullCourses();
+    // ===== TODO 16 =====
+    Course getWithStudents(String code);
+    // ===== TODO 17 =====
+    List<CourseEnrollmentCount> findTopEnrolled(int n);
+
 }

@@ -1,6 +1,7 @@
 package com.example.chap4.runner;
 
 import com.example.chap4.pojo.Course;
+import com.example.chap4.pojo.Student;
 import com.example.chap4.service.CourseService;
 import com.example.chap4.service.EnrollmentService;
 import com.example.chap4.service.StudentService;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
+import org.hibernate.LazyInitializationException;
+import java.util.Comparator;
 
 @Component
 @Order(3)
@@ -138,5 +141,38 @@ public class Exercise2Runner implements CommandLineRunner {
         title("TODO 15: SIZE() on collections");
         printList("(a) Full courses", courseService.findFullCourses());
         printList("(b) Students with more than 2 courses", enrollmentService.findStudentsWithMoreThan(2));
+    }
+    // ===== TODO 16 =====
+    private void todo16() {
+        title("TODO 16: LazyInitializationException, JOIN FETCH, @EntityGraph");
+
+        // (a) Lỗi LazyInitializationException khi đọc collection ngoài transaction
+        try {
+            Student s = studentService.findByStudentCode("SE001").orElseThrow();
+            System.out.println("(a) courses = " + s.getCourses().size());
+        } catch (LazyInitializationException e) {
+            System.out.println("(a) Caught: " + e.getClass().getSimpleName());
+            System.out.println("    " + e.getMessage());
+        }
+
+        // (b) Dùng JOIN FETCH
+        Student s = enrollmentService.getStudentWithCourses("SE001");
+        System.out.println("(b) " + s.getStudentCode() + " - " + s.getFullName());
+        s.getCourses().stream()
+                .sorted(Comparator.comparing(Course::getCode))
+                .forEach(c -> System.out.println("   " + c));
+
+        // (c) Dùng @EntityGraph
+        Course c = courseService.getWithStudents("SWP391");
+        System.out.println("(c) " + c.getCode() + " - " + c.getName());
+        c.getStudents().stream()
+                .sorted(Comparator.comparing(Student::getFullName))
+                .forEach(st -> System.out.println("   " + st));
+    }
+    // ===== TODO 17 =====
+    private void todo17() {
+        title("TODO 17: native SQL on join table - top 3 enrolled courses");
+        courseService.findTopEnrolled(3).forEach(r -> System.out.printf(
+                "    %s | %-35s | %d student(s)%n", r.getCode(), r.getName(), r.getEnrolled()));
     }
 }

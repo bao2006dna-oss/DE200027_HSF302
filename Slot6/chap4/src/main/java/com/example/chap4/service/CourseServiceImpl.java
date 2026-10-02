@@ -1,5 +1,6 @@
 package com.example.chap4.service;
 
+import com.example.chap4.dto.CourseEnrollmentCount;
 import com.example.chap4.dto.CourseStatDTO;
 import com.example.chap4.pojo.Course;
 import com.example.chap4.repository.CourseRepository;
@@ -74,5 +75,19 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> findFullCourses() {
         return courseRepository.findFullCourses();
+    }
+    // ===== TODO 16 =====
+    @Override
+    public Course getWithStudents(String code) {
+        return courseRepository.findWithStudentsByCode(code)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found: " + code));
+    }
+    // ===== TODO 17 =====
+    @Override
+    public List<CourseEnrollmentCount> findTopEnrolled(int n) {
+        if (n <= 0) {
+            throw new IllegalArgumentException("n must be > 0");
+        }
+        return courseRepository.findTopEnrolledNative(n);
     }
 }

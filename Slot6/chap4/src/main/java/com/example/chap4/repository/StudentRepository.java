@@ -113,4 +113,7 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
     // ===== Exercise 2 — TODO 15 =====
     @Query("SELECT s FROM Student s WHERE SIZE(s.courses) > :n ORDER BY s.fullName")
     List<Student> findStudentsWithMoreThanNCourses(@Param("n") int n);
+    // ===== Exercise 2 — TODO 16 =====
+    @Query("SELECT s FROM Student s LEFT JOIN FETCH s.courses WHERE s.studentCode = :code")
+    Optional<Student> findByStudentCodeWithCourses(@Param("code") String studentCode);
 }

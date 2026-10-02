@@ -64,4 +64,5 @@ public class Course {
         return String.format("%s | %-40s | %d credits | cap %d | %s",
                 code, name, credits, capacity, semester);
     }
+
 }
