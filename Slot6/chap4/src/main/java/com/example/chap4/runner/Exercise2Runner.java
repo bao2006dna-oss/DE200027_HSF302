@@ -214,4 +214,17 @@ public class Exercise2Runner implements CommandLineRunner {
         attempt("unenroll SE001 -> PRJ301 (again)", () -> enrollmentService.unenroll("SE001", "PRJ301"));
         printList("Courses of SE001 after unenroll", enrollmentService.getCoursesOfStudent("SE001"));
     }
+    // ===== TODO 22 =====
+    private void todo22() {
+        title("TODO 22: switchCourse in 1 transaction");
+        // Đang có SE001 học SWP391 và HSF302. Thử chuyển SWP391 -> AIL303 (AIL303 đã full 4/4)
+        attempt("switch SE001 SWP391 -> AIL303 (full -> rollback)",
+                () -> enrollmentService.switchCourse("SE001", "SWP391", "AIL303"));
+
+        // Thử chuyển hợp lệ: SWP391 -> IAA202
+        attempt("switch SE001 SWP391 -> IAA202 (OK)",
+                () -> enrollmentService.switchCourse("SE001", "SWP391", "IAA202"));
+
+        printList("Courses of SE001 after switch", enrollmentService.getCoursesOfStudent("SE001"));
+    }
 }
