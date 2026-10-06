@@ -1,4 +1,4 @@
-package fu.de200027.Chapter6;
+package com.hsf302.chapter6;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

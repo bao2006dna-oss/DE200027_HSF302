@@ -1,4 +1,4 @@
-package fu.de200027.Chapter6;
+package com.hsf302.chapter6;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
