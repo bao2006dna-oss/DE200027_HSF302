@@ -1,4 +1,4 @@
-package com.hsf302.chapter6.service.impl;
+package com.hsf302.chapter6.service;
 
 import com.hsf302.chapter6.entity.Student;
 import com.hsf302.chapter6.repository.StudentRepository;
