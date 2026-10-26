@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e737d830-cfb5-4398-95be-85897bb771dc" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/student-thymeleaf/src/main/resources/templates/students/detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/student-thymeleaf/src/main/resources/templates/students/form.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
