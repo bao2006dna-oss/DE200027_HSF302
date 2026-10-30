@@ -4,25 +4,16 @@ module com.fu.ch08 {
     requires javafx.web;      // T5
     requires javafx.media;    // T5
 
-    // FXMLLoader cần reflection vào controller (@FXML private field/method)
-    opens com.fu.ch08.b4 to javafx.fxml;
-    opens com.fu.ch08.b5 to javafx.fxml;
-    opens com.fu.ch08.b6 to javafx.fxml;
-    opens com.fu.ch08.t1 to javafx.fxml, javafx.base;   // javafx.base: PropertyValueFactory (TableView)
-    opens com.fu.ch08.t4 to javafx.fxml, javafx.base;
+    // 1. Mở package gốc chứa HelloApplication cho javafx.graphics để khởi tạo ứng dụng
+    opens com.fu.ch08 to javafx.graphics;
+    exports com.fu.ch08;
 
-    // Application class phải được export để javafx.graphics khởi tạo được
-    // b1–b3 viết UI bằng code (không FXML) → chỉ cần exports, không cần opens
+    // 2. FXMLLoader cần reflection vào controller trong gói b4
+    opens com.fu.ch08.b4 to javafx.fxml;
+
+    // 3. Export các package giao diện (b1–b3 viết bằng code, không FXML)
     exports com.fu.ch08.b1;
     exports com.fu.ch08.b2;
     exports com.fu.ch08.b3;
     exports com.fu.ch08.b4;
-    exports com.fu.ch08.b5;
-    exports com.fu.ch08.b6;
-    exports com.fu.ch08.t1;
-    exports com.fu.ch08.t2;
-    exports com.fu.ch08.t3;
-    exports com.fu.ch08.t4;
-    exports com.fu.ch08.t5;
-    exports com.fu.ch08.t6;
 }
